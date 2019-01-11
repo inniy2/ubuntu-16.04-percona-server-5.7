@@ -1,0 +1,9 @@
+**/*.sw[a-z]
+**/*.tar
+**/*.tar.*
+**/*.log
+**/*.retry
+**/.vagrant
+
+
+

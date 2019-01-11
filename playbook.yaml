@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+
+  vars_files:
+    - config.yaml
+
+  tasks:
+    - name: What?
+      debug:
+        msg: "System {{ inventory_hostname }} has uuid {{ ansible_product_uuid }}"
+
+    - include: centos5-setup.yaml
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version < '6'
+
+    - include: centos6-setup.yaml
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '6'
+
+    - include: centos7-setup.yaml
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6'
+
+    - include: ubuntu14-setup.yaml
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '14'
+
+    - include: ubuntu16-setup.yaml
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '16'
+
+    - include: ubuntu18-setup.yaml
+      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '18'
