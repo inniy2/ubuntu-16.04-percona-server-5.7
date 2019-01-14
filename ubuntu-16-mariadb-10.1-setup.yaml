@@ -27,7 +27,7 @@
     group: "{{ item.group }}"
     recurse: "{{ item.recurse }}"
   with_items:
-    - {path: '/etc/mysql' , state: directory, mode: 0644, owner: root, group: root, recurse: true }
+    - {path: '/etc/mysql' , state: directory, mode: '0644', owner: root, group: root, recurse: true }
 
 - name: add templates debian.cnf my.cnf
   template:
@@ -37,8 +37,8 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
   with_items:
-    - {src: 'templates/debian.cnf.j2', dest: '/etc/mysql/debian.cnf', mode: 0644, owner: "root", group: "root" }
-    - {src: 'templates/my.cnf.j2', dest: '/etc/mysql/my.cnf', mode: 0644, owner: "root", group: "root" }
+    - {src: 'templates/debian.cnf.j2', dest: '/etc/mysql/debian.cnf', mode: '0644', owner: "root", group: "root" }
+    - {src: 'templates/my.cnf.j2', dest: '/etc/my.cnf', mode: '0644', owner: "root", group: "root" }
 
 - name: Install mariadb-10.1
   apt:
