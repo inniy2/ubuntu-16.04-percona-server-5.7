@@ -90,11 +90,15 @@ log_error = /var/log/mysql/error.log
 #       other settings you may need to change.
 server-id               = 1
 log_bin                 = /var/log/mysql/mysql-bin.log
+binlog_format           = row
 relay_log               = /var/log/mysql/relay-log.log
 expire_logs_days        = 10
 max_binlog_size         = 100M
 read_only
 log_slave_updates
+
+gtid_domain_id          = 1
+gtid_strict_mode        = 1
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name
 #
