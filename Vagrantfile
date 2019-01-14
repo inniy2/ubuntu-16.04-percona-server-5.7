@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
 
   config.vm.provider :virtualbox do |v|
-    v.name = "slave1"
+    v.name = "ghost"
     v.memory = 512
     v.cpus = 2
   end
@@ -25,15 +25,15 @@ Vagrant.configure("2") do |config|
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
 
-  config.vm.hostname = "slave1"
+  config.vm.hostname = "ghost"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-   config.vm.network "forwarded_port", guest: 80,   host: 802
-   config.vm.network "forwarded_port", guest: 8080, host: 8082
-   config.vm.network "forwarded_port", guest: 3306, host: 33062
+   config.vm.network "forwarded_port", guest: 80,   host: 803
+   config.vm.network "forwarded_port", guest: 8080, host: 8083
+   config.vm.network "forwarded_port", guest: 3306, host: 33063
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-   config.vm.network "private_network", ip: "192.168.33.12"
+   config.vm.network "private_network", ip: "192.168.33.13"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -89,5 +89,18 @@ Vagrant.configure("2") do |config|
     ansible.raw_arguments  = [
       "--private-key=/Users/baesangsun/.vagrant.d/insecure_private_key"
     ]
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.compatibility_mode = "2.0"
+    ansible.limit = "all"
+    ansible.verbose = "v"
+    ansible.playbook = "ghost-playbook.yaml"
+    ansible.inventory_path = "inventory"
+    ansible.become = true
+    ansible.raw_arguments  = [
+      "--private-key=/Users/baesangsun/.vagrant.d/insecure_private_key"
+    ]
+
   end
 end
