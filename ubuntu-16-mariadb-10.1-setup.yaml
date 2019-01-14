@@ -1,0 +1,61 @@
+---
+
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    update_cache: yes
+  #environment:
+    #DEBIAN_FRONTEND: noninteractive
+
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: "hkp://keyserver.ubuntu.com:80"
+    id: "0xF1656F24C74CD1D8"
+    state: present
+
+- name: add repository
+  apt_repository:
+    repo: deb [arch=amd64,arm64,i386,ppc64el] http://ftp.eenet.ee/pub/mariadb/repo/10.1/ubuntu xenial main
+    state: present
+
+- name: Creates directories /etc/mysql
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    recurse: "{{ item.recurse }}"
+  with_items:
+    - {path: '/etc/mysql' , state: directory, mode: 0644, owner: root, group: root, recurse: true }
+
+- name: add templates debian.cnf my.cnf
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items:
+    - {src: 'templates/debian.cnf.j2', dest: '/etc/mysql/debian.cnf', mode: 0644, owner: "root", group: "root" }
+    - {src: 'templates/my.cnf.j2', dest: '/etc/mysql/my.cnf', mode: 0644, owner: "root", group: "root" }
+
+- name: Install mariadb-10.1
+  apt:
+    name: mariadb-server
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- mysql_user:
+    config_file: "{{ item.login_file }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    host: "{{ item.host }}"
+    priv: "{{ item.priv }}"
+    state: "{{ item.state }}"
+  with_items:
+    - {login_file: '/etc/mysql/debian.cnf', name: 'bae', password: 'bae', host: '%', priv: '*.*:ALL,grant', state: present }
+    - {login_file: '/etc/mysql/debian.cnf', name: 'repl', password: 'repl', host: '%', priv: '*.*:replication client', state: present }
+
+

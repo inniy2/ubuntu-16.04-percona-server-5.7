@@ -18,3 +18,20 @@
   vars:
     packages:
     - tree
+    - python-pymysql
+
+- name: Show value of 'variablename'
+  debug: msg="{{ lookup('vars', 'mysql_version')}}"
+
+- include: ubuntu-16-percona-5.7-setup.yaml
+  when: mysql_version == "percona-5.7"
+
+- include: ubuntu-16-percona-5.8-setup.yaml
+  when: mysql_version == "percona-5.8"
+
+- include: ubuntu-16-mariadb-10.1-setup.yaml
+  when: mysql_version == "mariadb-10.1"
+
+- include: ubuntu-16-mariadb-10.2-setup.yaml
+  when: mysql_version == "mariadb-10.2"
+

@@ -1,0 +1,29 @@
+---
+- name: Download repository
+  get_url:
+    url: https://repo.percona.com/apt/percona-release_latest.xenial_all.deb
+    dest: /tmp
+    mode: 0644
+
+- name: Install a .deb package
+  apt:
+    deb: /tmp/percona-release_latest.xenial_all.deb
+
+- name: Update repositories cache and install percona package
+  apt:
+    name: percona-server-server-5.7
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- mysql_user:
+    login_user: root
+    login_password: bae
+    name: root
+    host: '%'
+    password: 'Whatever_you_said1@'
+    encrypted: no
+    priv: '*.*:ALL'
+    state: present
+    config_file: /etc/mysql/debian.cnf
+  become: true

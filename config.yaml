@@ -1,3 +1,4 @@
 ---
 # percona-5.7, mariadb-10.1, mariadb-10.2
-mysql_version: percona-5.7
+mysql_version: mariadb-10.1
+mysql_root_password: bae

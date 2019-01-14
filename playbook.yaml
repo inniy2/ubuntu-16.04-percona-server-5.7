@@ -9,20 +9,20 @@
       debug:
         msg: "System {{ inventory_hostname }} has uuid {{ ansible_product_uuid }}"
 
-    - include: centos5-setup.yaml
+    - include: centos-5-setup.yaml
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version < '6'
 
-    - include: centos6-setup.yaml
+    - include: centos-6-setup.yaml
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '6'
 
-    - include: centos7-setup.yaml
+    - include: centos-7-setup.yaml
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6'
 
-    - include: ubuntu14-setup.yaml
+    - include: ubuntu-14-setup.yaml
       when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '14'
 
-    - include: ubuntu16-setup.yaml
+    - include: ubuntu-16-setup.yaml
       when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '16'
 
-    - include: ubuntu18-setup.yaml
+    - include: ubuntu-18-setup.yaml
       when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '18'
