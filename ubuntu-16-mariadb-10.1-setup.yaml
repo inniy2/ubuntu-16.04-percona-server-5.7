@@ -56,6 +56,6 @@
     state: "{{ item.state }}"
   with_items:
     - {login_file: '/etc/mysql/debian.cnf', name: 'bae', password: 'bae', host: '%', priv: '*.*:ALL,grant', state: present }
-    - {login_file: '/etc/mysql/debian.cnf', name: 'repl', password: 'repl', host: '%', priv: '*.*:replication client', state: present }
+    - {login_file: '/etc/mysql/debian.cnf', name: 'repl', password: 'repl', host: '%', priv: '*.*:replication slave,replication client', state: present }
 
 
